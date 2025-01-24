@@ -1,5 +1,4 @@
-// Style your components here
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 
 export const AppContainer = styled.div`
   display: flex;
@@ -8,17 +7,20 @@ export const AppContainer = styled.div`
   min-height: 100vh;
   background-image: linear-gradient(orange, white, green);
 `
-
 export const MemeGeneratorContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 32px 24px 32px 24px;
+  max-width: 550px;
+  padding-top: 32px;
+  padding-right: 24px;
+  padding-bottom: 32px;
+  padding-left: 24px;
   @media screen and (min-width: 768px) {
-    width: 80%;
+    width: 85%;
+    max-width: 1140px;
   }
 `
-
 export const Heading = styled.h1`
   color: #35469c;
   font-family: 'Open Sans';
@@ -31,7 +33,8 @@ export const Heading = styled.h1`
     text-align: left;
   }
 `
-export const FormMemeContainer = styled.div`
+
+export const FormAndMemeContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -48,7 +51,9 @@ export const MemeContainer = styled.div`
   background-image: url(${props => props.backgroundImage});
   background-size: cover;
   height: 300px;
-  padding: 0px 10px 50px 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-bottom: 50px;
   @media screen and (min-width: 768px) {
     width: 48%;
     margin-top: 5px;
@@ -56,11 +61,14 @@ export const MemeContainer = styled.div`
   }
 `
 export const TextContent = styled.p`
-  font-weight: 600;
-  font-family: 'Open Sans';
   color: #ffffff;
   font-size: ${props => props.activeFontSizeId}px;
+  color: ${props => props.activeColor};
+  font-style: ${props => props.activeFontStyle};
+  font-weight: 600;
+  font-family: 'Open Sans';
 `
+
 export const MemeGeneratorForm = styled.form`
   display: flex;
   flex-direction: column;
@@ -69,11 +77,12 @@ export const MemeGeneratorForm = styled.form`
     width: 40%;
   }
 `
+
 export const CustomLabel = styled.label`
-  color: #000000;
+  color: #8b0000;
   font-family: 'Open Sans';
-  font-weight: bold;
-  font-size: 14px;
+  font-weight: 500;
+  font-size: 12px;
   line-height: 1.4;
   margin-bottom: 0px;
 `
@@ -112,11 +121,6 @@ export const CustomOption = styled.option`
   padding-right: 14px;
   padding-bottom: 12px;
   padding-left: 14px;
-`
-export const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `
 
 export const GenerateButton = styled.button`
