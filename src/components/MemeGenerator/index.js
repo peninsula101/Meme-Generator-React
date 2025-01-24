@@ -4,7 +4,7 @@ import {
   AppContainer,
   MemeGeneratorContainer,
   Heading,
-  FormMemeContainer,
+  FormAndMemeContainer,
   MemeContainer,
   TextContent,
   MemeGeneratorForm,
@@ -12,7 +12,6 @@ import {
   CustomInput,
   CustomSelect,
   CustomOption,
-  ButtonContainer,
   GenerateButton,
 } from './styledComponents'
 
@@ -46,69 +45,98 @@ const fontSizesOptionsList = [
     displayText: '32',
   },
 ]
-// Write your code here
+
+const differentColorsList = [
+  {
+    colorId: 'White',
+    colorHex: '#ffffff',
+  },
+  {
+    colorId: 'Lavender',
+    colorHex: '#E6E6FA',
+  },
+  {
+    colorId: 'Fuchsia',
+    colorHex: '#FF00FF',
+  },
+  {
+    colorId: 'Indigo',
+    colorHex: '#4B0082',
+  },
+  {
+    colorId: 'LightSalmon',
+    colorHex: '#FFA07A',
+  },
+  {
+    colorId: 'Black',
+    colorHex: '#000000',
+  },
+]
+
+const fontStylesList = [
+  {
+    styleId: 'normal',
+    styleText: 'Normal',
+  },
+  {
+    styleId: 'italic',
+    styleText: 'Italic',
+  },
+  {
+    styleId: 'oblique -90deg;',
+    styleText: 'Oblique',
+  },
+]
 
 class MemeGenerator extends Component {
   state = {
-    activeFontSizeOptionId: fontSizesOptionsList[0].optionId,
     backgroundImageUrlInput: '',
-    backgroundImageUrl: '',
     topTextInput: '',
-    topText: '',
     bottomTextInput: '',
+    activeFontSizeOptionId: fontSizesOptionsList[0].optionId,
+    activeColorOptionId: differentColorsList[0].colorHex,
+    activeFontStyleOptionId: fontStylesList[0].styleId,
+    backgroundImageUrl: '',
+    topText: '',
     bottomText: '',
     activeFontSizeId: '',
+    activeColor: '',
+    activeFontStyle: '',
   }
 
   onChangeBackgroundImage = event => {
-    this.setState({
-      backgroundImageUrlInput: event.target.value,
-    })
+    this.setState({backgroundImageUrlInput: event.target.value})
   }
 
   onChangeTopTextInput = event => {
-    this.setState({
-      topTextInput: event.target.value,
-    })
+    this.setState({topTextInput: event.target.value})
   }
 
   onChangeBottomTextInput = event => {
-    this.setState({
-      bottomTextInput: event.target.value,
-    })
+    this.setState({bottomTextInput: event.target.value})
   }
 
   onChangeFontSizeOptionID = event => {
-    this.setState({
-      activeFontSizeOptionId: event.target.value,
-    })
+    this.setState({activeFontSizeOptionId: event.target.value})
   }
 
-  renderMeme = () => {
-    const {
-      backgroundImageUrl,
-      activeFontSizeId,
-      topText,
-      bottomText,
-    } = this.state
-
-    return (
-      <MemeContainer data-testid="meme" backgroundImage={backgroundImageUrl}>
-        <TextContent activeFontSizeId={activeFontSizeId}>{topText}</TextContent>
-        <TextContent activeFontSizeId={activeFontSizeId}>
-          {bottomText}
-        </TextContent>
-      </MemeContainer>
-    )
+  onChangeColorOptionId = event => {
+    this.setState({activeColorOptionId: event.target.value})
   }
 
-  memeGenerator = event => {
+  onChangeFontStyle = event => {
+    this.setState({activeFontStyleOptionId: event.target.value})
+  }
+
+  onGenerateMeme = event => {
     event.preventDefault()
     const {
       backgroundImageUrlInput,
-      activeFontSizeOptionId,
       topTextInput,
       bottomTextInput,
+      activeFontSizeOptionId,
+      activeColorOptionId,
+      activeFontStyleOptionId,
     } = this.state
 
     this.setState({
@@ -116,59 +144,115 @@ class MemeGenerator extends Component {
       topText: topTextInput,
       bottomText: bottomTextInput,
       activeFontSizeId: activeFontSizeOptionId,
+      activeColor: activeColorOptionId,
+      activeFontStyle: activeFontStyleOptionId,
     })
   }
 
-  renderMemeGenerator = () => {
+  renderMemeGeneratorForm = () => {
     const {
-      backgroundImageUrlInput,
       activeFontSizeOptionId,
+      activeColorOptionId,
+      activeFontStyleOptionId,
+      backgroundImageUrlInput,
       topTextInput,
       bottomTextInput,
     } = this.state
 
     return (
-      <MemeGeneratorForm onSubmit={this.memeGenerator}>
-        <CustomLabel htmlFor="url-input">Image URL</CustomLabel>
+      <MemeGeneratorForm onSubmit={this.onGenerateMeme}>
+        <CustomLabel htmlFor="backgroundImageUrl">Image URL</CustomLabel>
         <CustomInput
-          id="url-input"
           type="text"
+          id="backgroundImageUrl"
           value={backgroundImageUrlInput}
-          placeholder="Enter the Image URL"
           onChange={this.onChangeBackgroundImage}
+          placeholder="Enter the Image URL"
         />
-        <CustomLabel htmlFor="top-text-input">Top Text</CustomLabel>
+        <CustomLabel htmlFor="topText">Top Text</CustomLabel>
         <CustomInput
-          id="top-text-input"
           type="text"
+          id="topText"
           value={topTextInput}
-          placeholder="Enter the Top Text"
           onChange={this.onChangeTopTextInput}
+          placeholder="Enter the Top Text"
         />
-        <CustomLabel htmlFor="bottom-text-input">Bottom Text</CustomLabel>
+        <CustomLabel htmlFor="bottomText">Bottom Text</CustomLabel>
         <CustomInput
-          id="bottom-text-input"
           type="text"
+          id="bottomText"
           value={bottomTextInput}
-          placeholder="Enter the Bottom Text"
           onChange={this.onChangeBottomTextInput}
+          placeholder="Enter the Bottom Text"
         />
-        <CustomLabel htmlFor="font-size">Font Size</CustomLabel>
+        <CustomLabel htmlFor="select">Font Size</CustomLabel>
         <CustomSelect
-          id="font-size"
+          id="select"
           value={activeFontSizeOptionId}
           onChange={this.onChangeFontSizeOptionID}
         >
-          {fontSizesOptionsList.map(eachFont => (
-            <CustomOption key={eachFont.optionId} value={eachFont.optionId}>
-              {eachFont.displayText}
+          {fontSizesOptionsList.map(eachOption => (
+            <CustomOption key={eachOption.optionId} value={eachOption.optionId}>
+              {eachOption.displayText}
             </CustomOption>
           ))}
         </CustomSelect>
-        <ButtonContainer>
-          <GenerateButton type="submit">Generate</GenerateButton>
-        </ButtonContainer>
+        <CustomLabel htmlFor="color">Text Color</CustomLabel>
+        <CustomSelect
+          id="color"
+          value={activeColorOptionId}
+          onChange={this.onChangeColorOptionId}
+        >
+          {differentColorsList.map(eachOption => (
+            <CustomOption key={eachOption.colorId} value={eachOption.colorHex}>
+              {eachOption.colorId}
+            </CustomOption>
+          ))}
+        </CustomSelect>
+        <CustomLabel htmlFor="style">Font Style</CustomLabel>
+        <CustomSelect
+          id="style"
+          value={activeFontStyleOptionId}
+          onChange={this.onChangeFontStyle}
+        >
+          {fontStylesList.map(eachOption => (
+            <CustomOption key={eachOption.styleId} value={eachOption.styleId}>
+              {eachOption.styleText}
+            </CustomOption>
+          ))}
+        </CustomSelect>
+        <GenerateButton type="submit">Generate</GenerateButton>
       </MemeGeneratorForm>
+    )
+  }
+
+  renderMeme = () => {
+    const {
+      backgroundImageUrl,
+      topText,
+      bottomText,
+      activeFontSizeId,
+      activeColor,
+      activeFontStyle,
+    } = this.state
+
+    return (
+      <MemeContainer data-testid="meme" backgroundImage={backgroundImageUrl}>
+        <TextContent
+          activeFontSizeId={activeFontSizeId}
+          activeColor={activeColor}
+          activeFontStyle={activeFontStyle}
+        >
+          {topText}
+        </TextContent>
+        <TextContent
+          activeFontSizeId={activeFontSizeId}
+          activeColor={activeColor}
+          activeFontStyle={activeFontStyle}
+        >
+          {bottomText}
+        </TextContent>
+      </MemeContainer>
     )
   }
 
@@ -177,10 +261,10 @@ class MemeGenerator extends Component {
       <AppContainer>
         <MemeGeneratorContainer>
           <Heading>Meme Generator</Heading>
-          <FormMemeContainer>
+          <FormAndMemeContainer>
             {this.renderMeme()}
-            {this.renderMemeGenerator()}
-          </FormMemeContainer>
+            {this.renderMemeGeneratorForm()}
+          </FormAndMemeContainer>
         </MemeGeneratorContainer>
       </AppContainer>
     )
